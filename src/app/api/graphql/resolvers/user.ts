@@ -41,6 +41,16 @@ export async function loginUser(
   }
 }
 
+export async function logoutUser(){
+  try {
+    const userCookies = await cookies();
+    userCookies.delete("Token");
+    return true;
+  } catch{
+    return false;
+  }
+}
+
 export async function createUser(
   _: any,
   args: {
@@ -99,12 +109,14 @@ export async function updateUserProfile(
     email: string;
     username: string;
     avatar: string;
+    role: string;
   }
 ) {
   const dataToUpdate = {
     name: args?.name,
     email: args?.email,
     username: args?.username,
+    role: args?.role,
   };
   try {
     const user = await getUserFromCookies();

@@ -15,6 +15,7 @@ export const ThemeContext = createContext<{
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
   const [isDark, setIsDark] = useState(true);
+  
   return (
     <ThemeContext.Provider value={{ isDark, setIsDark }}>
       <Theme appearance={isDark ? "dark" : "light"}>{children}</Theme>

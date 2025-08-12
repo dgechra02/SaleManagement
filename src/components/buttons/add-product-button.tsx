@@ -15,23 +15,30 @@ import { Product, ProductCategory, User } from "../../../generated/prisma";
 export default function AddProductButton() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState<number>();
-  const [stock, setStock] = useState<number>();
+  const [price, setPrice] = useState<number>(0);
+  const [stock, setStock] = useState<number>(1);
   const [imageUrl, setImageUrl] = useState("");
   const [category, setCategory] = useState("others");
-  
-  async function handleAddProduct(){
+
+  async function handleAddProduct() {
     console.log("handleAddProduct run");
     try {
-        const product : { addProducts : Product} = await gqlClient.request(ADD_PRODUCT, {
-            title, description, category, price, stock, imageUrl
-        })
-        if(product?.addProducts){
-            alert("prodcut created successfully");
+      const product: { addProducts: Product } = await gqlClient.request(
+        ADD_PRODUCT,
+        {
+          title,
+          description,
+          category,
+          price,
+          stock,
+          imageUrl,
         }
-      
-    } catch{
-        alert("error in creating product")
+      );
+      if (product?.addProducts) {
+        alert("prodcut created successfully");
+      }
+    } catch {
+      alert("error in creating product");
     }
   }
 
@@ -76,7 +83,13 @@ export default function AddProductButton() {
               <TextField.Root
                 placeholder="Enter your price"
                 value={price}
-                onChange={(e) => setPrice(parseFloat(e.target.value))}
+                onChange={(e) => {
+                  if (e.target.value == "") {
+                    setPrice(0);
+                  } else {
+                    setPrice(parseFloat(e.target.value));
+                  }
+                }}
               />
             </label>
             <label>
@@ -86,7 +99,13 @@ export default function AddProductButton() {
               <TextField.Root
                 placeholder="Enter your stock"
                 value={stock}
-                onChange={(e) => setStock(parseInt(e.target.value))}
+                onChange={(e) => {
+                  if (e.target.value == "") {
+                    setStock(1);
+                  } else {
+                    setStock(parseInt(e.target.value));
+                  }
+                }}
               />
             </label>
             <label>

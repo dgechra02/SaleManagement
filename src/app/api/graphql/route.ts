@@ -3,7 +3,7 @@ import { ApolloServer } from "@apollo/server";
 import { NextRequest } from "next/server";
 import { gql } from "graphql-tag";
 import {typeDefs} from './typeDefs'
-import { createUser, getAllUsers, loginUser, updateUserProfile, updateUserRole } from "./resolvers/user";
+import { createUser, getAllUsers, loginUser, logoutUser, updateUserProfile, updateUserRole } from "./resolvers/user";
 import { getUserFromCookies } from "@/libs/helper";
 import { addProducts, createSale, getAllProducts, getProduct } from "./resolvers/products";
 
@@ -11,6 +11,7 @@ import { addProducts, createSale, getAllProducts, getProduct } from "./resolvers
 const resolvers = {
   Query: {
     loginUser,
+    logoutUser,
     currentUser : getUserFromCookies,
     getAllUsers, 
     getAllProducts, 

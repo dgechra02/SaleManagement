@@ -1,4 +1,4 @@
-import { CREATE_USER } from "@/libs/gql/queries";
+import { CREATE_USER, UPDATE_USER_PROFILE } from "@/libs/gql/queries";
 import gqlClient from "@/libs/services/graphql";
 import {
   Button,
@@ -9,28 +9,29 @@ import {
   TextField,
 } from "@radix-ui/themes";
 import React, { useState } from "react";
-import { User } from "../../../generated/prisma";
+import { RoleType, User } from "../../../generated/prisma";
+import { Pencil } from "lucide-react";
 
-export default function AddUserButton() {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("staff");
+export default function EditUserProfile({user} : {user : User}) {
+  const [name, setName] = useState(user?.name);
+  const [username, setUsername] = useState(user?.username);
+  const [email, setEmail] = useState(user?.email);
+  const [role, setRole] = useState<RoleType>(user?.role || "staff");
+  const [avatar, setAvatar] = useState(user?.avatar || "");
 
 
   async function handleAddUser(){
     console.log("handleAddUser run");
     try {
-        const data : {createUser : User } = await gqlClient.request(CREATE_USER, {
-            name, email, username, role, password
+        const data : {updateUserProfile : User } = await gqlClient.request(UPDATE_USER_PROFILE, {
+            userId : user?.id, name, email, username, role, avatar
         })
         console.log("data in create suer", data)
-        if(data?.createUser){
-            alert("user created")
+        if(data?.updateUserProfile){
+            alert("user profile updated")
         }
     } catch{
-        alert("error in create user")
+        alert("error")
     }
   }
 
@@ -38,13 +39,13 @@ export default function AddUserButton() {
     <div>
       <Dialog.Root>
         <Dialog.Trigger>
-          <Button>Add User</Button>
+          <Button><Pencil /></Button>
         </Dialog.Trigger>
 
         <Dialog.Content maxWidth="450px">
-          <Dialog.Title>Add User</Dialog.Title>
+          <Dialog.Title>Edit User</Dialog.Title>
           <Dialog.Description size="2" mb="4">
-            Add new members
+            Edit user profile
           </Dialog.Description>
 
           <Flex direction="column" gap="3">
@@ -80,14 +81,15 @@ export default function AddUserButton() {
             </label>
             <label>
               <Text as="div" size="2" mb="1" weight="bold">
-                Password
+                Avatar
               </Text>
               <TextField.Root
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your Avatar"
+                value={avatar}
+                onChange={(e) => setAvatar(e.target.value)}
               />
             </label>
+           
             <Select.Root value={role} onValueChange={setRole}>
               <Select.Trigger />
               <Select.Content>

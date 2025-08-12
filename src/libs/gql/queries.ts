@@ -110,3 +110,29 @@ export const CREATE_SALE = gql`
     createSale(id: $createSaleId, quantity: $quantity)
   }
 `;
+
+export const LOGOUT_USER = gql`
+  query Sales {
+    logoutUser
+  }
+`;
+
+export const UPDATE_USER_PROFILE = gql`
+  mutation Mutation(
+    $userId: String!
+    $name: String!
+    $email: String!
+    $username: String!
+    $avatar: String
+    $role: String!
+  ) {
+    updateUserProfile(
+      userId: $userId
+      name: $name
+      email: $email
+      username: $username
+      avatar: $avatar
+      role: $role
+    )
+  }
+`;

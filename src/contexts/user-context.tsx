@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import { $Enums, User } from "../../generated/prisma";
 
 type userWithoutPassword = {
@@ -23,6 +23,9 @@ export default function UserProvider({
   children: ReactNode;
   user: userWithoutPassword;
 }) {
+
+    useEffect
+
   return (
     <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
   );
