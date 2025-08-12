@@ -6,7 +6,8 @@ export const typeDefs = gql`
     currentUser: User, 
     getAllUsers: [User], 
     getAllProducts: [Product],
-    getProduct(id: String): Product
+    getProduct(id: String): Product, 
+    getProductSales: [Sale]
   }
   type Mutation {
     createUser(
@@ -38,5 +39,13 @@ export const typeDefs = gql`
     price: Float
     stock: Int
     imageUrl: String
+    sales: [Sale]
+  }
+
+  type Sale {
+    id: String
+    productId: String
+    quantity: Int
+    createdAt: String
   }
 `;

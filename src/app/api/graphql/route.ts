@@ -5,7 +5,7 @@ import { gql } from "graphql-tag";
 import {typeDefs} from './typeDefs'
 import { createUser, getAllUsers, loginUser, updateUserProfile, updateUserRole } from "./resolvers/user";
 import { getUserFromCookies } from "@/libs/helper";
-import { addProducts, getAllProducts, getProduct } from "./resolvers/products";
+import { addProducts, createSale, getAllProducts, getProduct } from "./resolvers/products";
 
 
 const resolvers = {

@@ -43,6 +43,13 @@ export async function getProduct(
       where: {
         id: args?.id,
       },
+      include : {
+        sales : {
+            orderBy : {
+                createdAt : "asc"
+            }
+        }
+      }
     });
     if (product) return product;
     else return null;
@@ -67,6 +74,18 @@ export async function createSale(
         quantity: args?.quantity,
       },
     });
+    if(sale){
+        await prismaClient.product.update({
+            where : {
+                id : args?.id
+            },
+            data : {
+                stock : {
+                    decrement : args?.quantity // valid for integers
+                }
+            }
+        })
+    }
     return true
   } catch {
     return false

@@ -1,27 +1,34 @@
 // 'use client'
-import { ADD_PRODUCT, CREATE_USER } from "@/libs/gql/queries";
+import { CREATE_SALE } from "@/libs/gql/queries";
 import gqlClient from "@/libs/services/graphql";
+import { ProductWithSale } from "@/types";
 import {
-  Button,
-  Dialog,
-  Flex,
-  Select,
-  Text,
-  TextField,
+    Button,
+    Dialog,
+    Flex,
+    Text,
+    TextField
 } from "@radix-ui/themes";
-import React, { useState } from "react";
-import { Product, ProductCategory, User } from "../../../generated/prisma";
+import { useState } from "react";
+import { Sale } from "../../../generated/prisma";
 
-export default function AddSaleButton({product} : {product : Product}) {
+export default function AddSaleButton({ product }: { product: ProductWithSale }) {
   const [quantity, setQuantity] = useState<number>(1);
 
-  async function handleAddSale(){
+  async function handleAddSale() {
+    if (product.stock < quantity) {
+      alert("can't add a sale more then quantity");
+    }
     try {
-        if(product.stock < quantity){
-            alert("can't add a sale more then quantity")
+        const data : { createSale : Sale } = await gqlClient.request(CREATE_SALE, {
+            createSaleId : product?.id, quantity : quantity
+        })
+
+        if(data?.createSale){
+            alert("success");
         }
-    } catch{
-        alert("error")
+    } catch {
+      alert("error");
     }
   }
 
@@ -46,7 +53,14 @@ export default function AddSaleButton({product} : {product : Product}) {
               <TextField.Root
                 placeholder="Enter your quantity"
                 value={quantity}
-                onChange={(e) => setQuantity(parseInt(e.target.value))}
+                onChange={(e) => {
+                    let value = e.target.value; 
+                    if(value == "") {
+                         setQuantity(0)
+                    } else {
+                        setQuantity(parseInt(e.target.value))
+                    }
+                }}
               />
             </label>
           </Flex>
