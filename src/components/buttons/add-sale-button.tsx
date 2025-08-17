@@ -16,8 +16,9 @@ export default function AddSaleButton({ product }: { product: ProductWithSale })
   const [quantity, setQuantity] = useState<number>(1);
 
   async function handleAddSale() {
-    if (product.stock < quantity) {
+    if (product && product.stock < quantity) {
       alert("can't add a sale more then quantity");
+      return;
     }
     try {
         const data : { createSale : Sale } = await gqlClient.request(CREATE_SALE, {
@@ -25,7 +26,7 @@ export default function AddSaleButton({ product }: { product: ProductWithSale })
         })
 
         if(data?.createSale){
-            alert("success");
+            alert("Sale added");
         }
     } catch {
       alert("error");

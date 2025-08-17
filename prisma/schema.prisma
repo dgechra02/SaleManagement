@@ -28,6 +28,7 @@ enum RoleType {
   admin
   manager  
   staff
+  guest
 }
 
 model Product {

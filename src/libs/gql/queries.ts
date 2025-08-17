@@ -136,3 +136,36 @@ export const UPDATE_USER_PROFILE = gql`
     )
   }
 `;
+
+export const GET_ALL_SALES = gql`
+  query GetSales {
+    getSales {
+      id
+      quantity
+      productId
+      createdAt
+    }
+  }
+`;
+
+export const UPDATE_PRODUCT = gql`
+  mutation Mutation(
+    $updateProductId: String!
+    $title: String!
+    $description: String!
+    $category: String!
+    $price: Float!
+    $stock: Int!
+    $imageUrl: String!
+  ) {
+    updateProduct(
+      id: $updateProductId
+      title: $title
+      description: $description
+      category: $category
+      price: $price
+      stock: $stock
+      imageUrl: $imageUrl
+    )
+  }
+`;

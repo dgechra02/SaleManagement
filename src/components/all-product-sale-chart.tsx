@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export default function ProductSaleChart({
+export default function AllProductsSaleChart({
   chartData,
 }: {
   chartData: ChartDataType;

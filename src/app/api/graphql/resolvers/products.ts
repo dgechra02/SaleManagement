@@ -43,13 +43,13 @@ export async function getProduct(
       where: {
         id: args?.id,
       },
-      include : {
-        sales : {
-            orderBy : {
-                createdAt : "asc"
-            }
-        }
-      }
+      include: {
+        sales: {
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
+      },
     });
     if (product) return product;
     else return null;
@@ -65,8 +65,6 @@ export async function createSale(
     quantity: number;
   }
 ) {
-
-
   try {
     const sale = await prismaClient.sale.create({
       data: {
@@ -74,20 +72,54 @@ export async function createSale(
         quantity: args?.quantity,
       },
     });
-    if(sale){
-        await prismaClient.product.update({
-            where : {
-                id : args?.id
-            },
-            data : {
-                stock : {
-                    decrement : args?.quantity // valid for integers
-                }
-            }
-        })
+    if (sale) {
+      await prismaClient.product.update({
+        where: {
+          id: args?.id,
+        },
+        data: {
+          stock: {
+            decrement: args?.quantity, // valid for integers
+          },
+        },
+      });
     }
-    return true
+    return true;
   } catch {
-    return false
+    return false;
+  }
+}
+
+export async function updateProduct(
+  _: any,
+  args: {
+    id: string;
+    title: string;
+    description: string;
+    category: ProductCategory;
+    price: number;
+    stock: number;
+    imageUrl: string;
+  }
+) {
+  const dataToUpdate = {
+    title: args?.title,
+    description: args?.description,
+    category: args?.category,
+    price: args?.price,
+    stock: args?.stock,
+    imageUrl: args?.imageUrl,
+  };
+  try {
+    const updatedProduct = await prismaClient.product.update({
+      where: {
+        id: args.id,
+      },
+      data: dataToUpdate,
+    });
+    return true;
+  } catch (error : any) {
+    console.log("error in update product ; ", error?.message)
+    return false;
   }
 }

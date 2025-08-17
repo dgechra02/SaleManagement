@@ -95,6 +95,7 @@ export default function AddUserButton() {
                   <Select.Label>Role:</Select.Label>
                   <Select.Item value="manager">Manager</Select.Item>
                   <Select.Item value="staff">Staff</Select.Item>
+                  <Select.Item value="guest">Guest</Select.Item>
                 </Select.Group>
               </Select.Content>
             </Select.Root>

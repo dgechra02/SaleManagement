@@ -1,6 +1,7 @@
-// 'use client'
-import { ADD_PRODUCT, CREATE_USER } from "@/libs/gql/queries";
+'use client'
+import { UPDATE_PRODUCT } from "@/libs/gql/queries";
 import gqlClient from "@/libs/services/graphql";
+import { ProductWithSale } from "@/types";
 import {
   Button,
   Dialog,
@@ -9,35 +10,25 @@ import {
   Text,
   TextField,
 } from "@radix-ui/themes";
-import React, { useState } from "react";
-import { Product, ProductCategory, User } from "../../../generated/prisma";
-import { nanoid } from "nanoid";
+import { useState } from "react";
 
-export default function AddProductButton() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState<number>(0);
-  const [stock, setStock] = useState<number>(1);
-  const [imageUrl, setImageUrl] = useState("");
-  const [category, setCategory] = useState("others");
+export default function EditProductButton({product} : {product : ProductWithSale}) {
+    console.log("product in edit button : ", product);
+  const [title, setTitle] = useState(product?.title || "");
+  const [description, setDescription] = useState(product?.description || "");
+  const [price, setPrice] = useState<number>(product?.price || 0);
+  const [stock, setStock] = useState<number>(product?.stock || 0);
+  const [imageUrl, setImageUrl] = useState(product?.imageUrl || "");
+  const [category, setCategory] = useState<string>(product?.category || "");
 
-  async function handleAddProduct() {
-    console.log("handleAddProduct run");
-
-    const product = {
-      title,
-      description,
-      category,
-      price,
-      stock,
-      imageUrl,
-      id: nanoid(),
-    };
+  async function handleEditProduct() {
+    console.log("handleEditProduct run");
 
     try {
-      const product: { addProducts: Product } = await gqlClient.request(
-        ADD_PRODUCT,
+      const data: { updateProduct: boolean } = await gqlClient.request(
+        UPDATE_PRODUCT,
         {
+          updateProductId : product?.id,
           title,
           description,
           category,
@@ -46,11 +37,11 @@ export default function AddProductButton() {
           imageUrl,
         }
       );
-      if (product?.addProducts) {
-        alert("product created successfully");
+      if (data?.updateProduct) {
+        alert("product updated successfully");
       }
     } catch {
-      alert("error in creating product");
+      alert("error in updating product");
     }
   }
 
@@ -58,13 +49,13 @@ export default function AddProductButton() {
     <div>
       <Dialog.Root>
         <Dialog.Trigger>
-          <Button>Add Product</Button>
+          <Button>Edit Product</Button>
         </Dialog.Trigger>
 
         <Dialog.Content maxWidth="450px">
-          <Dialog.Title>Add Product</Dialog.Title>
+          <Dialog.Title>Edit Product</Dialog.Title>
           <Dialog.Description size="2" mb="4">
-            Add new product
+            Edit product
           </Dialog.Description>
 
           <Flex direction="column" gap="3">
@@ -159,7 +150,7 @@ export default function AddProductButton() {
               </Button>
             </Dialog.Close>
             <Dialog.Close>
-              <Button onClick={handleAddProduct}>Save</Button>
+              <Button onClick={handleEditProduct}>Save</Button>
             </Dialog.Close>
           </Flex>
         </Dialog.Content>

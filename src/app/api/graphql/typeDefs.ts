@@ -9,6 +9,7 @@ export const typeDefs = gql`
     getAllProducts: [Product],
     getProduct(id: String): Product, 
     getProductSales: [Sale],
+    getSales: [Sale]
   }
 
   type Mutation {
@@ -23,6 +24,7 @@ export const typeDefs = gql`
     updateUserProfile(userId: String!, name: String!, email: String!, username: String!, role: String!, avatar: String) : Boolean
     addProducts(title: String!, description: String!, category: String!, price: Float!, stock: Int!, imageUrl: String!) : Product
     createSale(id: String!, quantity: Int!) : Boolean
+    updateProduct(id: String!, title: String!, description: String!, category: String!, price: Float!, stock: Int!, imageUrl: String!) : Boolean
   }
   type User {
     id: String

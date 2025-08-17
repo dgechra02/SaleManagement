@@ -4,23 +4,19 @@ import gqlClient from "@/libs/services/graphql";
 import {
   Avatar,
   Box,
-  Button,
   Card,
-  Dialog,
   Flex,
-  Text,
-  TextField,
+  Text
 } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { User } from "../../generated/prisma";
 import AddUserButton from "./buttons/add-user-button";
-import { Pencil } from "lucide-react";
 import EditUserProfile from "./buttons/edit-user-profile";
 export default function SideBar() {
-  const [users, setUsers] = useState<[User] | []>();
+  const [users, setUsers] = useState<User[]>();
   useEffect(() => {
     async function getUsers() {
-      const data: { getAllUsers: [User] } = await gqlClient.request(
+      const data: { getAllUsers: User[] } = await gqlClient.request(
         GET_ALL_USER
       );
       setUsers(data?.getAllUsers);
@@ -30,7 +26,7 @@ export default function SideBar() {
   }, []);
 
   return (
-    <div className="border users p-2 w-100">
+    <div className="border users p-2 w-80">
       <div className="flex justify-between p-2">
         <span className="text-xl font-semibold">All Users</span>
         <AddUserButton />
@@ -43,9 +39,10 @@ export default function SideBar() {
               <Flex gap="3" align="center" justify="between">
                 <Avatar
                   size="3"
-                  src="https://media.tenor.com/L3bo3h3YaPgAAAAm/coolcatjam-cat.webp"
+                  src={user?.avatar || ""}
+                  alt="user-avatar"
                   radius="full"
-                  fallback="T"
+                  fallback={user?.name?.charAt(0)}
                 />
                 <Box>
                   <Text as="div" size="2" weight="bold">
@@ -55,7 +52,7 @@ export default function SideBar() {
                     {user?.username}
                   </Text>
                 </Box>
-                <EditUserProfile user={user}/>
+                <EditUserProfile user={user} toEdit=""/>
               </Flex>
             </Card>
           </Box>

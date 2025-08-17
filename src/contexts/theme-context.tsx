@@ -1,16 +1,14 @@
 "use client";
 
-import { createContext, ReactNode, useState } from "react";
 import { Theme } from "@radix-ui/themes";
-
-const themeType = {};
+import { createContext, ReactNode, useState } from "react";
 
 export const ThemeContext = createContext<{
     isDark : boolean, // esko bhi null krte eski vale pta nhi ho, per es case me pta hai ki hamesha hi boolean hogi
-    setIsDark : ((value : boolean) => void) | null
+    setIsDark : ((value : boolean) => void)
 }>({
-    isDark : true, 
-    setIsDark : null
+    isDark : true,
+    setIsDark : () => {}
 });
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {

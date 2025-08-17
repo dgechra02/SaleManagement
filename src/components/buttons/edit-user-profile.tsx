@@ -1,5 +1,7 @@
-import { CREATE_USER, UPDATE_USER_PROFILE } from "@/libs/gql/queries";
+"use client";
+import { UPDATE_USER_PROFILE } from "@/libs/gql/queries";
 import gqlClient from "@/libs/services/graphql";
+import { UserWithoutPassword } from "@/types";
 import {
   Button,
   Dialog,
@@ -8,30 +10,37 @@ import {
   Text,
   TextField,
 } from "@radix-ui/themes";
-import React, { useState } from "react";
-import { RoleType, User } from "../../../generated/prisma";
 import { Pencil } from "lucide-react";
+import { useState } from "react";
+import { User } from "../../../generated/prisma";
 
-export default function EditUserProfile({user} : {user : User}) {
+export default function EditUserProfile({ user, toEdit }: { user: UserWithoutPassword | null, toEdit : string }) {
   const [name, setName] = useState(user?.name);
   const [username, setUsername] = useState(user?.username);
   const [email, setEmail] = useState(user?.email);
-  const [role, setRole] = useState<RoleType>(user?.role || "staff");
+  const [role, setRole] = useState<string>(user?.role || "staff");
   const [avatar, setAvatar] = useState(user?.avatar || "");
 
-
-  async function handleAddUser(){
+  async function handleAddUser() {
     console.log("handleAddUser run");
     try {
-        const data : {updateUserProfile : User } = await gqlClient.request(UPDATE_USER_PROFILE, {
-            userId : user?.id, name, email, username, role, avatar
-        })
-        console.log("data in create suer", data)
-        if(data?.updateUserProfile){
-            alert("user profile updated")
+      const data: { updateUserProfile: User } = await gqlClient.request(
+        UPDATE_USER_PROFILE,
+        {
+          userId: user?.id,
+          name,
+          email,
+          username,
+          role,
+          avatar,
         }
-    } catch{
-        alert("error")
+      );
+      console.log("data in create suer", data);
+      if (data?.updateUserProfile) {
+        alert("user profile updated");
+      }
+    } catch {
+      alert("error");
     }
   }
 
@@ -39,7 +48,9 @@ export default function EditUserProfile({user} : {user : User}) {
     <div>
       <Dialog.Root>
         <Dialog.Trigger>
-          <Button><Pencil /></Button>
+          <Button>
+            <Pencil width={16}/> {toEdit ? toEdit : null}
+          </Button>
         </Dialog.Trigger>
 
         <Dialog.Content maxWidth="450px">
@@ -89,17 +100,22 @@ export default function EditUserProfile({user} : {user : User}) {
                 onChange={(e) => setAvatar(e.target.value)}
               />
             </label>
-           
-            <Select.Root value={role} onValueChange={setRole}>
-              <Select.Trigger />
-              <Select.Content>
-                <Select.Group>
-                  <Select.Label>Role:</Select.Label>
-                  <Select.Item value="manager">Manager</Select.Item>
-                  <Select.Item value="staff">Staff</Select.Item>
-                </Select.Group>
-              </Select.Content>
-            </Select.Root>
+
+            <label>
+              <Text as="div" size="2" mb="1" weight="bold">
+                Role
+              </Text>
+              <Select.Root value={role} onValueChange={setRole}>
+                <Select.Trigger />
+                <Select.Content>
+                  <Select.Group>
+                    <Select.Label>Role:</Select.Label>
+                    <Select.Item value="manager">Manager</Select.Item>
+                    <Select.Item value="staff">Staff</Select.Item>
+                  </Select.Group>
+                </Select.Content>
+              </Select.Root>
+            </label>
           </Flex>
 
           <Flex gap="3" mt="4" justify="end">

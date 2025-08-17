@@ -1,7 +1,7 @@
 "use client";
 
-import { createContext, ReactNode, useEffect, useState } from "react";
-import { $Enums, User } from "../../generated/prisma";
+import { createContext, ReactNode, useEffect } from "react";
+import { $Enums } from "../../generated/prisma";
 
 type userWithoutPassword = {
   name: string;

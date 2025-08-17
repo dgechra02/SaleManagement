@@ -109,7 +109,7 @@ export async function updateUserProfile(
     email: string;
     username: string;
     avatar: string;
-    role: string;
+    role: RoleType;
   }
 ) {
   const dataToUpdate = {

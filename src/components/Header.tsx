@@ -15,10 +15,11 @@ import {
 import gqlClient from "@/libs/services/graphql";
 import { LOGOUT_USER } from "@/libs/gql/queries";
 import { ThemeContext } from "@/contexts/theme-context";
+import Link from "next/link";
 
 export default function Header() {
   const { user } = useContext(UserContext);
-  const { setIsDark, isDark } = useContext(ThemeContext); 
+  const { setIsDark, isDark } = useContext(ThemeContext);
 
   console.log("isDark : ", isDark);
 
@@ -34,17 +35,19 @@ export default function Header() {
 
   return (
     <header className="flex justify-between items-center px-6 py-3 border-b mb-3">
-      <div className="logo flex gap-2">
+      <div className="logo flex items-center gap-2">
         <img
           src="https://cdn-icons-png.flaticon.com/512/12474/12474074.png"
           alt="logo"
           className="w-10"
         />
-        <h1 className="font-bold text-2xl">SaleStream </h1>
+        <Link href={"/"}>
+          <h1 className="font-bold text-2xl max-sm:hidden block">SaleStream </h1>
+        </Link>
       </div>
 
       <div className="profile flex gap-2">
-        <label className="swap swap-rotate" >
+        <label className="swap swap-rotate">
           {/* this hidden checkbox controls the state */}
           <input
             type="checkbox"
@@ -79,7 +82,7 @@ export default function Header() {
                 <Flex gap="3" align="center">
                   <Avatar
                     size="3"
-                    src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop"
+                    src={user?.avatar || ""}
                     radius="full"
                     fallback={user?.name?.charAt(0) || "U"}
                   />
@@ -98,10 +101,12 @@ export default function Header() {
           <DropdownMenuContent className="w-56" align="start">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                Profile
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-              </DropdownMenuItem>
+              <Link href={"/user"}>
+                <DropdownMenuItem>
+                  Profile
+                  <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuItem onClick={handleLogout}>
               Log out

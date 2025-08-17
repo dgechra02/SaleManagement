@@ -1,11 +1,11 @@
-import { startServerAndCreateNextHandler } from "@as-integrations/next";
-import { ApolloServer } from "@apollo/server";
-import { NextRequest } from "next/server";
-import { gql } from "graphql-tag";
-import {typeDefs} from './typeDefs'
-import { createUser, getAllUsers, loginUser, logoutUser, updateUserProfile, updateUserRole } from "./resolvers/user";
 import { getUserFromCookies } from "@/libs/helper";
-import { addProducts, createSale, getAllProducts, getProduct } from "./resolvers/products";
+import { ApolloServer } from "@apollo/server";
+import { startServerAndCreateNextHandler } from "@as-integrations/next";
+import { addProducts, createSale, getAllProducts, getProduct, updateProduct } from "./resolvers/products";
+import { getSales } from "./resolvers/sale";
+import { createUser, getAllUsers, loginUser, logoutUser, updateUserProfile, updateUserRole } from "./resolvers/user";
+import { typeDefs } from './typeDefs';
+import { NextRequest } from "next/server";
 
 
 const resolvers = {
@@ -15,14 +15,16 @@ const resolvers = {
     currentUser : getUserFromCookies,
     getAllUsers, 
     getAllProducts, 
-    getProduct
+    getProduct, 
+    getSales
   },
   Mutation: {
     createUser,
     updateUserRole, 
     updateUserProfile, 
     addProducts, 
-    createSale
+    createSale, 
+    updateProduct
   }
 };
 
@@ -31,8 +33,18 @@ const server = new ApolloServer({
     resolvers,
 });
 
-const handler = startServerAndCreateNextHandler<NextRequest>(server, {
-    context: async req => ({ req }),
-});
+// const handler = startServerAndCreateNextHandler(server, {
+//     context: async req => ({ req }),
+// });
 
-export { handler as GET, handler as POST };
+// export { handler as GET, handler as POST };
+
+const handler = startServerAndCreateNextHandler(server);
+
+export async function GET(request: NextRequest) {
+  return handler(request);
+}
+
+export async function POST(request: NextRequest) {
+  return handler(request);
+}
