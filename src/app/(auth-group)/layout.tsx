@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 export default async function layout({ children} : {children : ReactNode}){
 
   const user = await getUserFromCookies();
-  if(!user) redirect("/login")
+  if(!user) redirect(`${process.env.NEXT_PUBLIC_HOST_NAME}/login`);
     return (
         <UserProvider user={user}>
           <Header />
