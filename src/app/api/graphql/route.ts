@@ -33,11 +33,6 @@ const server = new ApolloServer({
     resolvers,
 });
 
-// const handler = startServerAndCreateNextHandler(server, {
-//     context: async req => ({ req }),
-// });
-
-// export { handler as GET, handler as POST };
 
 const handler = startServerAndCreateNextHandler(server);
 
@@ -48,3 +43,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   return handler(request);
 }
+  // const handler = startServerAndCreateNextHandler(server, {
+  //     context: async req => ({ req }),
+  // });
+  
+  // export { handler as GET, handler as POST };

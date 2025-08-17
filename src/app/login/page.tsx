@@ -29,7 +29,6 @@ export default function Page() {
         if (data?.loginUser) {
           window.location.href = process.env.NEXT_PUBLIC_HOST_NAME as string;
           
-        alert("user logged in");
         } else {
           setError({
             message: "Invaild Credential",

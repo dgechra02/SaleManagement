@@ -33,7 +33,7 @@ export default async function page() {
                 </div>
               </div>
               <div>
-                <EditUserProfile user={user} toEdit='Edit Profile'/>
+                {user?.role != "guest" ? <EditUserProfile user={user} toEdit='Edit Profile'/> : null}
               </div>
             </div>
           </div>
