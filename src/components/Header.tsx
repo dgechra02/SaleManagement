@@ -27,7 +27,7 @@ export default function Header() {
     try {
       const data = await gqlClient.request(LOGOUT_USER);
       //   alert("logged out");
-      window.location.href = "http://localhost:3000";
+      window.location.href = `${process.env.NEXT_PUBLIC_HOST_NAME}/login`;
     } catch {
       alert("failed");
     }
