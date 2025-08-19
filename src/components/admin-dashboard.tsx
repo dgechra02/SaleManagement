@@ -35,7 +35,8 @@ export default function AdminDashboard() {
     sales?.map((sale) => {
       const date = new Date(Number(sale.createdAt));
       const format =
-        date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear();
+        date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear();
+        // console.log("get month : ", date.getMonth());
       const quantity = sale.quantity;
 
       const obj = {
