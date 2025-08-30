@@ -131,7 +131,7 @@ export default function Page() {
       <div className=" max-md:w-full md:flex-1 h-[500px] flex flex-col gap-6">
         <h2 className="text-xl font-semibold">Sales Chart</h2>
         <div className="chart rounded-lg border-2 p-2 md:p-6 w-full h-full">
-          <ProductSaleChart chartData={chartData} />
+          {chartData?.length ? <ProductSaleChart chartData={chartData} /> : "No Sale added!"}
         </div>
       </div>
     </div>
